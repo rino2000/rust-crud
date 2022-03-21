@@ -1,11 +1,10 @@
-use actix_web::{HttpServer, App,web};
+use actix_web::{web, App, HttpServer};
 
-mod routes;
 mod models;
+mod routes;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
-
     let client_options =
         mongodb::options::ClientOptions::parse("mongodb+srv://{DB_USERNAME}:{DB_PASSWORD}@test.gt1ft.mongodb.net/{DB_NAME}?retryWrites=true&w=majority").await.unwrap();
 
@@ -13,7 +12,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
-        .app_data(web::Data::new(client.clone()))
+            .app_data(web::Data::new(client.clone()))
             .service(routes::index)
             .service(routes::delete)
             .service(routes::create)
